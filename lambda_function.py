@@ -8,7 +8,7 @@ logger.setLevel(logging.INFO)
 def get_cobertura(url):
     base_shields = "https://img.shields.io/badge/coverage"
     try:
-        r = requests.get(url)
+        r = requests.get('http://' + url)
         logger.info(r)
         logger.info(r.json())
         ratio = None
@@ -28,9 +28,9 @@ def get_cobertura(url):
 
 
 def lambda_handler(event, context):
-    qp = event['queryParameters']
-    jenkins_url = qp['jenkins_url']
-    job_name = qp['job_name']
+    pp = event['pathParameters']
+    jenkins_url = pp['jenkins_url']
+    job_name = pp['job_name']
     logger.info("jenkins_url: {}, job_name: {}".format(jenkins_url, job_name))
 
     url = jenkins_url + '/job/' + job_name + '/lastSuccessfulBuild/cobertura/api/json/?depth=2'
